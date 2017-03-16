@@ -1,0 +1,17 @@
+{
+  "name": "booktracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "alen sljivar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mysql2": "^1.2.0",
+    "sequelize": "^3.30.2",
+    "sequelize-cli": "^2.5.1"
+  }
+}
