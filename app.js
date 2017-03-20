@@ -1,7 +1,22 @@
-var express = require('express');
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const indexRoute = require('./routes');
+const booksRoute = require('./routes/books');
+const shelvesRoute = require('./routes/shelves');
+const commentsRoute = require('./routes/comments');
 
 var app = express();
 
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use('/', indexRoute);
+app.use('/books', booksRoute);
+app.use('/shelves', shelvesRoute);
+app.use('/comments', commentsRoute);
 
 
 // catch 404 and forward to error handler

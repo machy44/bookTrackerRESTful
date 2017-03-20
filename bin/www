@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('express-sequelize');
-var http = require('http');
-var models = require('../server/models');
+const app = require('../app');
+const debug = require('debug')('express-sequelize');
+const http = require('http');
+const models = require('../server/models');
 
 /**B
  * Get port from environment and store in Express.
@@ -24,17 +24,8 @@ models.sequelize.sync().then(function() {
   /**
    * Listen on provided port, on all network interfaces.
    */
-   var Book = require('../server/models').Book;
-   var Shelf = require('../server/models').Shelf;
 
-   Shelf.create({naziv: 'polica jedan'}).then(function(polica) {
-     polica.getBooks().then(function(param){
-       console.log(param);
-     });
-   });
-
-
-  server.listen(port, function() {
+server.listen(port, function() {
     debug('Express server listening on port ' + server.address().port);
   });
   server.on('error', onError);
@@ -44,7 +35,6 @@ models.sequelize.sync().then(function() {
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
