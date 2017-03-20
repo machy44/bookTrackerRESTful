@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const indexRoute = require('./routes');
 const booksRoute = require('./routes/books');
 const shelvesRoute = require('./routes/shelves');
-const commentsRoute = require('./routes/comments');
 
 var app = express();
 
@@ -16,7 +15,6 @@ app.use(bodyParser.json());
 app.use('/', indexRoute);
 app.use('/books', booksRoute);
 app.use('/shelves', shelvesRoute);
-app.use('/comments', commentsRoute);
 
 
 // catch 404 and forward to error handler
