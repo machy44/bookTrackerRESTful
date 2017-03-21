@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const indexRouter = require('./routes');
 const booksRouter = require('./routes/books');
 const shelvesRouter = require('./routes/shelves');
-const commentsRouter = require('./routes/comments')
+const commentsRouter = require('./routes/comments');
+
 
 var app = express();
 
@@ -12,16 +13,15 @@ var app = express();
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-//home page route
+//routes
 app.use('/', indexRouter);
-// BOOKS ROUTES
+//books and comments routes
 app.use('/books', booksRouter);
-app.use("/books/:bookId/comments", commentsRouter)
-
-//SHELVES ROUTES
+app.use('/books/:bookId/comments', commentsRouter);
+//shelves and comments routes
 app.use('/shelves', shelvesRouter);
-
+app.use('/shelves/:shelfId/books', booksRouter);
+//app.use('/shelves/:shelfId/books/:bookId/comments', commentsRouter);
 
 
 // catch 404 and forward to error handler
