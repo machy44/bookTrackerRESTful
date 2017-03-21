@@ -1,0 +1,60 @@
+create database booktrackerapi;
+
+create table books (
+ id INT unsigned auto_increment primary key,
+ naziv varchar (255),
+ autor varchar (32),
+ kategorija varchar (32),
+ isbn varchar (17),
+ izdavac varchar (32),
+ godina int,
+ izdanje int,
+ broj_stranica int,
+ jezik varchar (16),
+ url varchar (255),
+ opis varchar (255)
+)
+create table comments (
+id INT unsigned auto_increment primary key,
+tekst varchar(255),
+datum_stvaranja TimeStamp,
+datum_modificiranja TimeStamp
+)
+
+ALTER TABLE `comments`
+ADD CONSTRAINT `FK_comments_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON UPDATE CASCADE;
+
+create table shelves (
+id INT unsigned auto_increment primary key,
+naziv varchar(32)
+)
+
+create table books_shelves (
+book_id INT unsigned,
+shelf_id INT unsigned 
+)
+
+ALTER TABLE book_shelves ADD id int unsigned auto_increment primary key;
+
+ALTER TABLE `book_shelves` ADD CONSTRAINT FK_book_shelves_books
+FOREIGN KEY (book_id) REFERENCES books(id)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `book_shelves` ADD CONSTRAINT FK_book_shelves_shelves
+FOREIGN KEY (shelf_id) REFERENCES shelves(id)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+INSERTIRANJE KNJIGA
+insert into books values (1, "JavaScript-the good parts", "Douglas Crockford",
+								  "JS programming language", "978-0-596-51774-8", "O,Reilly", 2008, 1,
+								  153, "English", "", "");
+
+insert into books values (2, "RESTful Web APIs", "Leonard Richardson and Mike Amundsen",
+								  "RESTful WEB API's", "978-1-449-35806-8", "O'Reilly", 2013, 1,
+								  372, "English", "", "");
+
+insert into books values (3, "Eloquent Javascript", "Marijn Haverbeke",
+								  "JS programming language", "978-1-59327-584-6", "No Starch Press, Inc", 2015, 2,
+								  451, "English", "", "");
+
