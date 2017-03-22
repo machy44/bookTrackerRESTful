@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Shelf = sequelize.define('Shelf', {
-    naziv: DataTypes.STRING
+    name:{
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     underscored: true,
     classMethods: {

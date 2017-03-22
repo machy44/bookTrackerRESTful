@@ -1,7 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Comment = sequelize.define('Comment', {
-    tekst: DataTypes.STRING
+    text:{
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     underscored: true,
     classMethods: {

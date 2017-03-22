@@ -13,7 +13,7 @@ var app = express();
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//routes
+//index route
 app.use('/', indexRouter);
 //books and comments routes
 app.use('/books', booksRouter);
@@ -21,7 +21,7 @@ app.use('/books/:bookId/comments', commentsRouter);
 //shelves and comments routes
 app.use('/shelves', shelvesRouter);
 app.use('/shelves/:shelfId/books', booksRouter);
-//app.use('/shelves/:shelfId/books/:bookId/comments', commentsRouter);
+app.use('/shelves/:shelfId/books/:bookId/comments', commentsRouter);
 
 
 // catch 404 and forward to error handler

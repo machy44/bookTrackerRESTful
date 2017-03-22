@@ -8,8 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      tekst: {
-        type: Sequelize.STRING
+      text:{
+        type: Sequelize.STRING,
+        allowNull: false
       },
       book_id: {
         type: Sequelize.INTEGER

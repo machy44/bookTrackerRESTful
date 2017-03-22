@@ -8,38 +8,37 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      naziv: {
-        type: Sequelize.STRING
+      title: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
-      autor: {
-        type: Sequelize.STRING
+      author:{
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      kategorija: {
-        type: Sequelize.STRING
+      isbn:Sequelize.STRING,
+      publisher:{
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      isbn: {
-        type: Sequelize.STRING
+      year: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
-      izdavac: {
-        type: Sequelize.STRING
+      edition: Sequelize.INTEGER,
+      pages: Sequelize.INTEGER,
+      language: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      godina: {
-        type: Sequelize.INTEGER
+      url:{
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      izdanje: {
-        type: Sequelize.INTEGER
-      },
-      broj_stranica: {
-        type: Sequelize.INTEGER
-      },
-      jezik: {
-        type: Sequelize.STRING
-      },
-      url: {
-        type: Sequelize.STRING
-      },
-      opis: {
-        type: Sequelize.STRING
+      about: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       created_at: {
         allowNull: false,

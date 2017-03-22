@@ -1,17 +1,38 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Book = sequelize.define('Book', {
-    naziv: DataTypes.STRING,
-    autor: DataTypes.STRING,
-    kategorija: DataTypes.STRING,
-    isbn: DataTypes.STRING,
-    izdavac: DataTypes.STRING,
-    godina: DataTypes.INTEGER,
-    izdanje: DataTypes.INTEGER,
-    broj_stranica: DataTypes.INTEGER,
-    jezik: DataTypes.STRING,
-    url: DataTypes.STRING,
-    opis: DataTypes.STRING
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    author:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    isbn:DataTypes.STRING,
+    publisher:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    edition: DataTypes.INTEGER,
+    pages: DataTypes.INTEGER,
+    language: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    url:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    about: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     underscored: true,
     classMethods: {
