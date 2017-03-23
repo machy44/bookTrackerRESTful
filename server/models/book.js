@@ -1,6 +1,6 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Book = sequelize.define('Book', {
+module.exports = (sequelize, DataTypes) => {
+  const Book = sequelize.define('Book', {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -8,7 +8,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     author:{
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: 1
+      }
     },
     isbn:DataTypes.STRING,
     publisher:{
@@ -36,7 +39,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored: true,
     classMethods: {
-      associate: function(models) {
+      associate: (models) =>{
         Book.hasMany(models.Comment);
         Book.belongsToMany(models.Shelf, {through: 'book_shelves'});
       }

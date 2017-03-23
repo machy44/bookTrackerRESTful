@@ -1,6 +1,6 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Comment = sequelize.define('Comment', {
+module.exports = (sequelize, DataTypes) => {
+  const Comment = sequelize.define('Comment', {
     text:{
       type: DataTypes.STRING,
       allowNull: false
@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored: true,
     classMethods: {
-      associate: function(models) {
+      associate: (models) => {
         Comment.belongsTo(models.Book);
       }
     }

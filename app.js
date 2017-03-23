@@ -13,6 +13,7 @@ var app = express();
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 //index route
 app.use('/', indexRouter);
 //books and comments routes

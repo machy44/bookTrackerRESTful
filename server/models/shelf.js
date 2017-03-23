@@ -1,6 +1,6 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Shelf = sequelize.define('Shelf', {
+module.exports = (sequelize, DataTypes)=> {
+  const Shelf = sequelize.define('Shelf', {
     name:{
       type: DataTypes.STRING,
       allowNull: false
@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored: true,
     classMethods: {
-      associate: function(models) {
+      associate: (models)=> {
         Shelf.belongsToMany(models.Book, {through: 'book_shelves'});
       }
     }
