@@ -8,21 +8,36 @@ router.get('/', (req, res) => {
 });
 
 router.post('/',  (req, res) => {
-  Book.create(req.body)
-    .then(book => res.status(200).json(book))
-    .catch(error => {
-      console.log(error);
-      res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
-    });
+    Book.create(req.body).then((book) => {
+        res.status(200).json(book)
+      })
+      .catch((error) => {
+        res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
+      });
 });
 
 router.get('/:bookId', (req, res) => {
-  //res.status(200).json({ message: 'GET one book!' });
-//res.send('shelf Id: ' + req.params.shelfId + '!');
+    Book.findById(req.params.bookId).then((book) => {
+        if (book) {
+        res.status(200).json(book)
+        }
+        else {
+         res.status(404).json({msg: 'Not found'});
+       }
+    });
 });
 
 router.delete('/:bookId',  (req, res) => {
-  res.status(200).json({ message: 'DELETE request to the books!' });
+  Book.destroy({
+    where: {id: req.params.bookId}
+  }).then((book) => {
+    if (book) {
+      res.status(204).end();
+    }
+    else {
+      res.status(404).json({msg: 'Not Found'});
+    }
+  });
 });
 
 router.put('/:bookId',  (req, res) => {

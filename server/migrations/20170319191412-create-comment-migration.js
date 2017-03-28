@@ -1,16 +1,25 @@
 'use strict';
 module.exports = {
   up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('Shelves', {
+    return queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name:{
+      text:{
         type: Sequelize.STRING,
         allowNull: false
+      },
+      book_id: {
+        type: Sequelize.INTEGER,
+          references: {
+              model: 'Books',
+              key: 'id'
+          },
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
       },
       created_at: {
         allowNull: false,
@@ -23,6 +32,6 @@ module.exports = {
     });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Shelves');
+    return queryInterface.dropTable('comments');
   }
 };
