@@ -1,7 +1,7 @@
 const express = require('express');
-const morgan = require('morgan');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
-const indexRouter = require('./routes');
+const apiRouter = require('./routes');
 const booksRouter = require('./routes/books');
 const shelvesRouter = require('./routes/shelves');
 const commentsRouter = require('./routes/comments');
@@ -14,15 +14,17 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//index route
-app.use('/', indexRouter);
-//books and comments routes
+app.use(logger("combined"));
+//api route
+app.use('/api', apiRouter);
+//app.route('/api')
+//BOOKS AND COMMENTS ROUTES
 app.use('/books', booksRouter);
 app.use('/books/:bookId/comments', commentsRouter);
-//shelves and comments routes
+//SHELVES
 app.use('/shelves', shelvesRouter);
 app.use('/shelves/:shelfId/books', booksRouter);
-app.use('/shelves/:shelfId/books/:bookId/comments', commentsRouter);
+//app.use('/shelves/:shelfId/books/:bookId/comments', commentsRouter);
 
 
 // catch 404 and forward to error handler
