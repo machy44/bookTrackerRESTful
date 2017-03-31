@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 });
 
 // POST book --create new book and add location header
+// error messages on branch post-route-comment-in-book-route
 router.post('/',  (req, res) => {
     Book.create(req.body).then((book) => {
         res.status(201).append('Location', `books/${book.get('id')}`).json(book);
