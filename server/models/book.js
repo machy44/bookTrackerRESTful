@@ -1,4 +1,5 @@
 'use strict';
+//indexes on title and author and year
 module.exports = (sequelize, DataTypes) => {
   const Book = sequelize.define('Book', {
     title: {
