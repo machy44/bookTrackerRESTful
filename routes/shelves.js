@@ -1,23 +1,28 @@
-const router = require('express').Router({mergeParams: true});
+const shelvesRouter = require('express').Router();
 
-router.get('/', (req, res) => {
-  res.status(200).json({ message: 'GET this is shelves!' });
-});
+// GET and POST on collection shelves
+shelvesRouter.route('/')
+  .get((req, res) => { //200 else 204
+    res.status(200).json({ message: 'GET this is shelves!' });
+  })
 
-router.get('/:shelfId', (req, res) => {
-  res.status(200).json({ message: 'GET this one shelf!' });
-});
+  .post((req, res) => {//201 ili 400 sa bodyem koji objasnjava error
+    res.status(200).json({ message: 'POST request to the shelves!' });
+  });
 
-router.post('/',  (req, res) => {
-  res.status(200).json({ message: 'POST request to the shelves!' });
-});
+shelvesRouter.route('/:shelfId')
+  .get((req, res) => {//200 else 404
+    res.status(200).json({ message: 'GET this one shelf!' });
+  })
 
-router.delete('/:shelfId',  (req, res) => {
-  res.status(200).json({ message: 'DELETE request to the shelves!' });
-});
+  .patch((req, res) => {//200 else 404
+    res.status(200).json({ message: 'PUT request to the shelves!' });
+  })
 
-router.put('/:shelfId',  (req, res) => {
-  res.status(200).json({ message: 'PUT request to the shelves!' });
-});
+  .delete((req, res) => {//204else 404
+    res.status(200).json({ message: 'DELETE request to the shelves!' });
+  });
 
-module.exports = router;
+//shelves/:shelfId/books
+
+module.exports = shelvesRouter;

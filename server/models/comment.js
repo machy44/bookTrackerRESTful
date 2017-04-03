@@ -2,8 +2,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     text:{
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      validate: {
+        len: { args: 1, msg: "Comment must be at least 1 character in length"}
+      }
     }
   }, {
     underscored: true,

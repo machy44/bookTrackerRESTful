@@ -3,42 +3,63 @@
 module.exports = (sequelize, DataTypes) => {
   const Book = sequelize.define('Book', {
     title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
     author:{
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
-        len: 1
+          min: { args: 1, msg: "Author cannot be blank"},
+          max: { args: 254, msg: "Author name can only be 254 characters long." }
       }
     },
-    isbn:DataTypes.STRING,
+    isbn: {
+      type: DataTypes.STRING(17),
+      unique: {
+          args: true,
+          msg: 'Oops. Looks like you have a book with this ISBN.'
+      }
+    },
     publisher:{
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING
     },
     year: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      validate :{
+          min: {args: 4, msg: "only numbers and must be 4 numbers long"},
+          max: {args: 4, msg: "only numbers and must be 4 numbers long"}
+      }
     },
     edition: DataTypes.INTEGER,
     pages: DataTypes.INTEGER,
     language: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(32)
     },
     url:{
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: {
+          args: true,
+          msg: "Oops. Looks like you already have a book with this URL."
+      },
+      validate: {
+          min: { args: 1, msg: "URL cannot be blank"},
+          max: { args: 255, msg: "URL You entered is longer than 255 characters"}
+    }
     },
     about: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(767),
+      allowNull: false,
+      validate: {
+          min: { args: 1, msg: " About cannot be blank." },
+          max: { args: 767, msg: "About You entered is longer than 767 characters" }
+      }
     }
   }, {
     underscored: true,
+ // title and edition unique
     classMethods: {
       associate: (models) =>{
         Book.hasMany(models.Comment);

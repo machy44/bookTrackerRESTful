@@ -9,18 +9,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        type: Sequelize.STRING(255),
+        allowNull: false
       },
       author:{
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
         allowNull: false
       },
-      isbn:Sequelize.STRING,
+      isbn: {
+        type: Sequelize.STRING(17),
+        unique: true
+      },
       publisher:{
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
       },
       year: {
         type: Sequelize.INTEGER,
@@ -29,16 +30,17 @@ module.exports = {
       edition: Sequelize.INTEGER,
       pages: Sequelize.INTEGER,
       language: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING(32)
       },
       url:{
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING(255),
+        allowNull: false,
+        unique: true
       },
       about: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING(767),
+        allowNull: false,
+        unique: true
       },
       created_at: {
         allowNull: false,
@@ -48,6 +50,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    },{
+      uniqueKeys: [{
+         name: 'You have that title with same edition in database',
+         singleFields: false,
+         fields: ['title', 'edition']
+      }],
     });
   },
   down: function(queryInterface, Sequelize) {
