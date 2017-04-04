@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-  
+
     return queryInterface.bulkInsert('books', [{
       title: 'Express in action',
       author: 'Evan M. Hahn',
@@ -12,8 +12,10 @@ module.exports = {
       edition: '1',
       pages: '256',
       language: 'English',
-      url: '/public/pdfs/Express_in_Action.pdf',
+      url: '/pdfs/Express_in_Action.pdf',
       about: " Express in Action is a carefully designed tutorial that teaches you how to build web applications using Node and Express. Express in Action teaches you how to build web applications using Node and Express. It starts by introducing Node's powerful traits and shows you how they map to the features of Express. You'll explore key development techniques, meet the rich ecosystem of companion tools and libraries, and get a glimpse into its inner workings. By the end of the book, you'll be able to use Express to build a Node app and know how to test it, hook it up to a database, and automate the dev process. ",
+      created_at: new Date(),
+      updated_at: new Date(),
     },
     {
       title: 'RESTful Web APIs',
@@ -24,8 +26,10 @@ module.exports = {
       edition: '1',
       pages: '408',
       language: 'English',
-      url: "public/pdfs/Leonard Richardson, Mike Amundsen, Sam Ruby-RESTful Web APIs-O'Reilly Media (2013).pdf",
+      url: "/pdfs/Leonard Richardson, Mike Amundsen, Sam Ruby-RESTful Web APIs-O'Reilly Media (2013).pdf",
       about: "Apply best practices for using HTTP in API implementations",
+      created_at: new Date(),
+      updated_at: new Date(),
     },
     {
       title: 'Express in action',
@@ -36,19 +40,17 @@ module.exports = {
       edition: '2',
       pages: '256',
       language: 'English',
-      url: '/public/pdfs/Express_in_Action2.pdf',
+      url: '/pdfs/Express_in_Action2.pdf',
       about: "a Express in Action is a carefully designed tutorial that teaches you how to build web applications using Node and Express. Express in Action teaches you how to build web applications using Node and Express. It starts by introducing Node's powerful traits and shows you how they map to the features of Express. You'll explore key development techniques, meet the rich ecosystem of companion tools and libraries, and get a glimpse into its inner workings. By the end of the book, you'll be able to use Express to build a Node app and know how to test it, hook it up to a database, and automate the dev process. ",
+      created_at: new Date(),
+      updated_at: new Date(),
     }
   ]);
   },
 
   down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+      return queryInterface.bulkDelete('books', null, {});
+
   }
 };

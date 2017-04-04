@@ -4,12 +4,12 @@ const Book = require('../server/models').Book;
 // GET and POST collection books
  booksRouter.route('/')
     .get((req, res) => {
-        Book.findAll().then(books =>{
-          res.status(200).json(books);
-      });
+        Book.findAll()
+        .then(books => res.status(200).json(books))
+        .catch(error => res.status(500).json( {msg: error}) );
   })
 
-// POST book --create new book and add location header
+// POST book --create new book and add location header to created resource
     .post((req, res) => {
       Book.create(req.body).then((book) => {
             res.status(201).append('Location', `books/${book.get('id')}`).json(book);

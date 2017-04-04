@@ -6,22 +6,22 @@ module.exports = {
     return queryInterface.bulkInsert('books_shelves', [
     {
       book_id: '1',
-      shelf_id: '1'
+      shelf_id: '1',
+      created_at: new Date(),
+      updated_at: new Date(),
     },
     {
       book_id: '2',
-      shelf_id: '2'
+      shelf_id: '2',
+      created_at: new Date(),
+      updated_at: new Date(),
     }
   ]);
   },
 
   down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+      return queryInterface.bulkDelete('books_shelves', null, {});
+
   }
 };

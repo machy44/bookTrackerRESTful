@@ -5,21 +5,21 @@ module.exports = {
 
     return queryInterface.bulkInsert('shelves', [
     {
-      name: 'JS programming language.'
+      name: 'JS programming language.',
+      created_at: new Date(),
+      updated_at: new Date(),
     },
     {
-      name: 'REST servisi'
+      name: 'REST servisi',
+      created_at: new Date(),
+      updated_at: new Date(),
     }
   ]);
   },
 
   down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+      return queryInterface.bulkDelete('shelves', null, {});
+
   }
 };

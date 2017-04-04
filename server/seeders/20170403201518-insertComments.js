@@ -15,22 +15,22 @@ module.exports = {
     return queryInterface.bulkInsert('comments', [
       {
         text: 'Aaauff sto je dobra knjiga.',
-        book_id: 1
+        book_id: 1,
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         text: 'Collection+json i druge tipove medija vidi',
-        book_id: 2
+        book_id: 2,
+        created_at: new Date(),
+        updated_at: new Date(),
       }
   ]);
   },
 
   down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+      return queryInterface.bulkDelete('comments', null, {});
+
   }
 };
