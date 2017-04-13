@@ -1,18 +1,19 @@
 const booksRouter = require('express').Router({mergeParams: true});
 const Book = require('../server/models').Book;
 
+
 // GET and POST collection books
  booksRouter.route('/')
-    .get((req, res) => {
+    .get( (req, res) => {
         Book.findAll()
         .then(books => res.status(200).json(books))
         .catch(error => res.status(500).json( {msg: error}) );
   })
 
 // POST book --create new book and add location header to created resource
-    .post((req, res) => {
+    .post( (req, res) => {
       Book.create(req.body).then((book) => {
-            res.status(201).append('Location', `books/${book.get('id')}`).json(book);
+            res.status(201).append('Location', `books/${book.get('id')}`).json(book);//Location header get uri with new id of created book
         }).catch((error) => {
             res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
         });

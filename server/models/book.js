@@ -24,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     publisher:{
       type: DataTypes.STRING
     },
-    year: {
+    year: { //sredi godinu
       type: DataTypes.INTEGER,
       allowNull: false,
       validate :{
-          min: {args: 4, msg: "only numbers and must be 4 numbers long"},
-          max: {args: 4, msg: "only numbers and must be 4 numbers long"}
+          min: {args: 0, msg: "only numbers from 0 till today date and must be 4 numbers long"},
+          max: {args: 2017, msg: "only numbers from 0 till today date and must be 4 numbers long"}
       }
     },
     edition: DataTypes.INTEGER,
