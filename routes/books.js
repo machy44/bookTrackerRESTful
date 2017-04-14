@@ -2,7 +2,7 @@ const booksRouter = require('express').Router({mergeParams: true});
 const Book = require('../server/models').Book;
 
 
-// GET and POST collection books
+// GET and POST collection books --> vracanje errora kada nema konekcije
  booksRouter.route('/')
     .get( (req, res) => {
         Book.findAll()
