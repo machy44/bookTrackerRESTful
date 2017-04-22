@@ -34,4 +34,6 @@ function getFriends() {
     friends.push(item);
 }
 
+getFriends();
+
 module.exports = friends;

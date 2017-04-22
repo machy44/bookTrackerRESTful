@@ -1,58 +1,60 @@
-const path = '';
-const base = '';
-
-const cj = {
-  createCjTemplate: function() {
+const cjRouter = require('express').Router({mergeParams: true});
+const Book = require('../server/models').Book;
+const cj = {};
+const friends = require('./friends');
+/*
+cjRouter.route('/')
+   .get( (req, res) => {
+     //Book.findAll();
+     const base = 'http://' + req.headers.host;
+     const path = base + req.baseUrl;
+     createCjTemplate(base, path);
+     makingCollection(path);
+     //res.send(JSON.stringify(cj));
+     res.status(200).json(cj);
+ });
+ */
+function createCjTemplate(base, path) {
      cj.collection = {};
      cj.collection.version = "1.0";
-     cj.collection.href = base+path;
+     cj.collection.href = base;
 
      cj.collection.links = [];
-     cj.collection.links.push({'rel':'home', 'href' : base});
+     cj.collection.links.push({'rel':'home', 'href' : path});
 
      cj.collection.items = [];
      cj.collection.queries = [];
      cj.collection.template = {};
-  }
 };
 
-module.exports = cj;
-//console.log(cj);
+function makingCollection(path){
+    let i, x, p;
+    for(i=0; i<friends.length; i++ ){
+      let item = {};
+      item.href = path + '/' + friends[i].name;
+      item.data = [];
+      item.links = [];
 
-// actual data to render
-// usually kept in external storage
-/*
-function getFriends() {
-    var item = {};
+      let d=0;
+      let l=0;
+      for (p in friends[i]) {
+            if(p==='blog'){
+              item.links[l++] = {
+                'rel': 'alternate',
+                'href': friends[i][p],
+                'prompt': p
+              }
+            }
+            else{
+                item.data[d++] = {
+                  'name': p,
+                  'value': friends[i][p],
+                  'prompt': p
+                }
+            }
+        }
+      cj.collection.items.push(item);
+    }
+};
 
-    item = {};
-    item.name = 'mildred';
-    item.email = 'mildred@example.com';
-    item.blog = 'http://example.com/blogs/mildred';
-    friends.push(item);
-
-    item = {};
-    item.name = 'mike';
-    item.email = 'mike@example.com';
-    item.blog = 'http://example.com/blogs/mike';
-    friends.push(item);
-
-    item = {};
-    item.name = 'mary';
-    item.email = 'mary@example.com';
-    item.blog = 'http://example.com/blogs/mary';
-    friends.push(item);
-
-    item = {};
-    item.name = 'mark';
-    item.email = 'mark@example.com';
-    item.blog = 'http://example.com/blogs/mark';
-    friends.push(item);
-
-    item = {};
-    item.name = 'muffin';
-    item.email = 'muffin@example.com';
-    item.blog = 'http://example.com/blogs/muffin';
-    friends.push(item);
-}
-*/
+module.exports = createCjTemplate;
