@@ -11,7 +11,7 @@ commentsRouter.route('/')
       const base = 'http://' + req.headers.host;
       const path = base + req.baseUrl;
       collectionJSON.createCjTemplate(base, path);
-      collectionJSON.makingCollection(comments, path); //i need to add read-comments rel
+      collectionJSON.makingItem(comments, path); //i need to add read-comments rel
       res.status(200).json(collectionJSON.cj);
     }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
 })

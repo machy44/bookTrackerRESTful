@@ -10,7 +10,7 @@ const collectionJSON = require('../helpers/mediaTypeObject');
           const base = 'http://' + req.headers.host;
           const path = base + req.baseUrl;
           collectionJSON.createCjTemplate(base, path);
-          collectionJSON.makingCollection(books, path); //i need to add read-comments rel i rel collection
+          collectionJSON.makingItem(books, path);
           res.status(200).json(collectionJSON.cj);
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   })
@@ -31,7 +31,7 @@ booksRouter.route('/:bookId')
         const base = 'http://' + req.headers.host;
         const path = base + req.baseUrl;
         collectionJSON.createCjTemplate(base, path);
-        collectionJSON.makingCollection([book], path);
+        collectionJSON.makingItem([book], path);
         res.status(200).json(collectionJSON.cj);
       }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })

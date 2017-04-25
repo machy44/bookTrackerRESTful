@@ -8,7 +8,6 @@ apiRouter.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to booktracker api!'  });
 });
 
-
 //BOOKS AND COMMENTS ROUTES
 apiRouter.use('/books', booksRouter);
 apiRouter.use('/books/:bookId/comments', commentsRouter);
