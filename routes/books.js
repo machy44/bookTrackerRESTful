@@ -3,16 +3,14 @@ const Book = require('../server/models').Book;
 const collectionJSON = require('../helpers/mediaTypeObject');
 
 
-
 // GET and POST collection books --> vracanje errora kada nema konekcije
-
  booksRouter.route('/')
     .get( (req, res) => {
         Book.findAll({limit:10, raw: true}).then(books=>{
           const base = 'http://' + req.headers.host;
           const path = base + req.baseUrl;
           collectionJSON.createCjTemplate(base, path);
-          collectionJSON.makingCollection(books, path); //i need to add read-comments rel
+          collectionJSON.makingCollection(books, path); //i need to add read-comments rel i rel collection
           res.status(200).json(collectionJSON.cj);
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   })
@@ -29,15 +27,15 @@ const collectionJSON = require('../helpers/mediaTypeObject');
 //GET, PATCH and DELETE single book
 booksRouter.route('/:bookId')
     .get((req, res) => {
-        Book.findById(req.params.bookId).then((book) => {
-            if (book) {
-            res.status(200).json(book)
-            }
-            else {
-            res.status(404).json( {msg: 'Not found'} );
-           }
-        });
+      Book.findById(req.params.bookId,{ raw: true }).then(book => {
+        const base = 'http://' + req.headers.host;
+        const path = base + req.baseUrl;
+        collectionJSON.createCjTemplate(base, path);
+        collectionJSON.makingCollection([book], path);
+        res.status(200).json(collectionJSON.cj);
+      }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })
+
     .patch((req, res) => {
         Book.findById(req.params.bookId).then(book => {
           if (!book) {
