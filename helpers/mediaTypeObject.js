@@ -1,20 +1,10 @@
 const cjRouter = require('express').Router({mergeParams: true});
 const Book = require('../server/models').Book;
 const cj = {};
-const friends = require('./friends');
-/*
-cjRouter.route('/')
-   .get( (req, res) => {
-     //Book.findAll();
-     const base = 'http://' + req.headers.host;
-     const path = base + req.baseUrl;
-     createCjTemplate(base, path);
-     makingCollection(path);
-     //res.send(JSON.stringify(cj));
-     res.status(200).json(cj);
- });
- */
-function createCjTemplate(base, path) {
+//const friends = require('./friends');
+
+//create collection+json template
+let createCjTemplate = function (base, path) {
      cj.collection = {};
      cj.collection.version = "1.0";
      cj.collection.href = base;
@@ -27,34 +17,41 @@ function createCjTemplate(base, path) {
      cj.collection.template = {};
 };
 
-function makingCollection(path){
-    let i, x, p;
-    for(i=0; i<friends.length; i++ ){
+//insert data in collection+json
+let makingCollection = function (dataFromDb, path){
+    for(let i=0; i<dataFromDb.length; i++ ){
       let item = {};
-      item.href = path + '/' + friends[i].name;
+      item.href = path + '/' + dataFromDb[i].id;
       item.data = [];
       item.links = [];
-
-      let d=0;
-      let l=0;
-      for (p in friends[i]) {
-            if(p==='blog'){
-              item.links[l++] = {
-                'rel': 'alternate',
-                'href': friends[i][p],
-                'prompt': p
-              }
-            }
-            else{
-                item.data[d++] = {
-                  'name': p,
-                  'value': friends[i][p],
-                  'prompt': p
-                }
-            }
-        }
+      insertingDataToCollection(dataFromDb, item, i);
+      insertingLinksToCollection(dataFromDb, item, i);
       cj.collection.items.push(item);
     }
 };
 
-module.exports = createCjTemplate;
+let insertingDataToCollection = function (dataFromDb,item, i){
+  let dataNumbering=0;
+  for (parameter in dataFromDb[i]) {
+            item.data[dataNumbering++] = {
+              'name': parameter,
+              'value': dataFromDb[i][parameter],
+              'prompt': parameter
+            }
+    }
+};
+
+let insertingLinksToCollection = function (dataFromDb, item, i){
+  let linksNumbering=0;
+  if(parameter==='blog'){
+    item.links[linksNumbering++] = {
+      'rel': 'alternate',
+      'href': dataFromDb[i][parameter],
+      'prompt': parameter
+    }
+  }
+};
+
+module.exports.createCjTemplate = createCjTemplate;
+module.exports.makingCollection = makingCollection;
+module.exports.cj = cj;

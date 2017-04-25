@@ -8,7 +8,6 @@ const apiRouter = require('./routes/api');
 const publicPath = path.resolve(__dirname, "public");
 
 
-
 const app = express();
 
 
@@ -20,15 +19,18 @@ app.use(logger("combined"));
 //for public/pdfs
 app.use('/', express.static(publicPath));
 
-
-//SET TO COLLECTION + JSON CONTENT TYPE and skeleton
-app.use( (req, res, next) => {
+//SET TO COLLECTION + JSON CONTENT TYPE
+app.use((req, res, next) => {
   res.set('Content-Type', 'application/vnd.collection+json');
   next();
 });
 
 //ROUTES
 app.use('/api', apiRouter);
+
+
+
+
 
 
 
