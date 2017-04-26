@@ -26,7 +26,7 @@ module.exports = {
       edition: '1',
       pages: '408',
       language: 'English',
-      url: "/pdfs/Leonard Richardson, Mike Amundsen, Sam Ruby-RESTful Web APIs-O'Reilly Media (2013).pdf",
+      url: "/pdfs/RESTful_Web_APIs.pdf)",
       about: "Apply best practices for using HTTP in API implementations",
       created_at: new Date(),
       updated_at: new Date(),
