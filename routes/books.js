@@ -21,27 +21,15 @@ different there.
 //search query
 booksRouter.route('/search')
   .get ((req, res) => {
-    const queryKeys = [];
-    if(Object.keys(req.query).includes('author')){
-      queryKeys.push('author');
+    let keysObject = {};
+    if(req.query.hasOwnProperty('author')){
+      keysObject.author = {$like: `%${req.query.author}%` };
     }
-     if(Object.keys(req.query).includes('year')){
-      queryKeys.push('year');
+    if(req.query.hasOwnProperty('year')){
+      keysObject.year  =   {$like: `%${req.query.year}%` };
     }
-    const keysObject = {};
-    if(queryKeys.indexOf('author')>-1){
-      keysObject.author = req.query.author;
-    }
-    if(queryKeys.indexOf('year')>-1){
-      keysObject.year = req.query.year;
-    }
-    console.log(Object.values(keysObject));
-      Book.findAll({ where: {
-                            year: { $or: [{ $like: `%${keysObject.year}%`},  $eq: null ] },
-                            author: { $or: [{ $like: `%${keysObject.author}%`},  $eq: null ] }
-                            }
-                  })
-    //  Book.findAll({where: Object.values(keysObject)})
+    console.log(keysObject);
+      Book.findAll({ where: keysObject })
         .then(books=> {
           res.status(200).json(books);
       }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
