@@ -12,6 +12,9 @@ apiRouter.get('/', (req, res) => {
 apiRouter.use('/books', booksRouter);
 apiRouter.use('/books/:bookId/comments', commentsRouter);
 
+//search query books route by author and year
+
+
 //SHELVES ROUTES
 apiRouter.use('/shelves', shelvesRouter);
 apiRouter.use('/shelves/:shelfId/books', booksRouter);

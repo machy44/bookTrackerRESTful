@@ -1,7 +1,51 @@
 const booksRouter = require('express').Router({mergeParams: true});
 const Book = require('../server/models').Book;
 const collectionJSON = require('../helpers/mediaTypeObject');
+/*
 
+/search?q=abc&q=xyz --> then req.query.q will be the array ["abc", "xyz"].
+var arrayWrap = require("arraywrap");
+// …
+app.get("/search", function(req, res) {
+ var search = arrayWrap(req.query.q || "");
+ var terms = search[0].split("+");
+ // … do something with the terms …
+});
+
+Now, if someone gives you more queries than you expect, you just take the first one
+and ignore the rest. This still works if someone gives you one query argument or no
+query argument. Alternatively, you could detect if the query was an array and do something
+different there.
+*/
+
+//search query
+booksRouter.route('/search')
+  .get ((req, res) => {
+    const queryKeys = [];
+    if(Object.keys(req.query).includes('author')){
+      queryKeys.push('author');
+    }
+     if(Object.keys(req.query).includes('year')){
+      queryKeys.push('year');
+    }
+    const keysObject = {};
+    if(queryKeys.indexOf('author')>-1){
+      keysObject.author = req.query.author;
+    }
+    if(queryKeys.indexOf('year')>-1){
+      keysObject.year = req.query.year;
+    }
+    console.log(Object.values(keysObject));
+      Book.findAll({ where: {
+                            year: { $or: [{ $like: `%${keysObject.year}%`},  $eq: null ] },
+                            author: { $or: [{ $like: `%${keysObject.author}%`},  $eq: null ] }
+                            }
+                  })
+    //  Book.findAll({where: Object.values(keysObject)})
+        .then(books=> {
+          res.status(200).json(books);
+      }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
+  });
 
 // GET and POST collection books --> vracanje errora kada nema konekcije
  booksRouter.route('/')
@@ -11,6 +55,7 @@ const collectionJSON = require('../helpers/mediaTypeObject');
           const path = base + req.baseUrl;
           collectionJSON.createCjTemplate(base, path);
           collectionJSON.makingItem(books, path);
+          collectionJSON.renderBooksQueries(books, path);
           res.status(200).json(collectionJSON.cj);
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   })

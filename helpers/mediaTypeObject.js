@@ -18,7 +18,7 @@ function createCjTemplate (base, path)  {
 //making item in collection+json
 function makingItem(dataFromDb, path, base){
     for(let i=0; i<dataFromDb.length; i++ ){
-      let item = {};
+      const item = {};
       item.href = path + '/' + dataFromDb[i].id;
       item.data = [];
       item.links = [];
@@ -26,6 +26,25 @@ function makingItem(dataFromDb, path, base){
       checkingResource(item, path);
       cj.collection.items.push(item);
     }
+};
+//query for searching by author and year
+function renderBooksQueries(books, path){
+    const query = {};
+    query.rel = "search";
+    query.href = path + '/search'
+    query.prompt = "search";
+    query.data = [];
+    query.data[0] = {
+        'name' : 'author',
+        'value' : '',
+        'prompt' : 'search book by author ?author={value}'
+    };
+    query.data[1] = {
+        'name' : 'year',
+        'value' : '',
+        'prompt' : 'search book by year ?year={value}'
+    }
+    cj.collection.queries.push(query);
 };
 
 function insertingDataToCollection(dataFromDb,item, i){
@@ -77,5 +96,5 @@ function insertingLinksToCollection (item, linked){
 
 
 module.exports = {
-  createCjTemplate, makingItem, cj
+  createCjTemplate, makingItem, cj, renderBooksQueries
 };

@@ -1,3 +1,10 @@
   const relBookItem = [['collection', '1'], ['read-comments', '2'], ['item', '3']];
 
-  console.log(relBookItem[1][0]);
+
+
+
+function t() {
+    return function() {
+     console.log( 'hello' );
+    };
+}
