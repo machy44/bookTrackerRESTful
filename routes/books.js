@@ -21,18 +21,22 @@ different there.
 //search query
 booksRouter.route('/search')
   .get ((req, res) => {
+    if(Object.keys(req.query).length===0) return res.status(200).json(Object.keys(req.query)); // return empty array when query doesnt have parameters
     let keysObject = {};
     if(req.query.hasOwnProperty('author')){
       keysObject.author = {$like: `%${req.query.author}%` };
-    }
+    };
     if(req.query.hasOwnProperty('year')){
       keysObject.year  =   {$like: `%${req.query.year}%` };
-    }
-    console.log(keysObject);
-      Book.findAll({ where: keysObject })
-        .then(books=> {
-          res.status(200).json(books);
-      }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
+    };
+      Book.findAll({ where: keysObject, raw: true })
+            .then(books=> {
+              const base = 'http://' + req.headers.host;
+              const path = base + req.baseUrl;
+              collectionJSON.createCjTemplate(base, path);
+              collectionJSON.makingItem(books, path);
+              res.status(200).json(collectionJSON.cj);
+    }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   });
 
 // GET and POST collection books --> vracanje errora kada nema konekcije
@@ -41,9 +45,10 @@ booksRouter.route('/search')
         Book.findAll({limit:10, raw: true}).then(books=>{
           const base = 'http://' + req.headers.host;
           const path = base + req.baseUrl;
-          collectionJSON.createCjTemplate(base, path);
+          collectionJSON.createCjTemplate(base, path); //ovo u jednu funkciju ubaciti
           collectionJSON.makingItem(books, path);
           collectionJSON.renderBooksQueries(books, path);
+          collectionJSON.renderTemplate(books);
           res.status(200).json(collectionJSON.cj);
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   })
@@ -68,7 +73,7 @@ booksRouter.route('/:bookId')
         res.status(200).json(collectionJSON.cj);
       }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })
-
+//ispraviti patch i delete da rade sa promisima then/catch
     .patch((req, res) => {
         Book.findById(req.params.bookId).then(book => {
           if (!book) {

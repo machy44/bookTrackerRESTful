@@ -27,26 +27,7 @@ function makingItem(dataFromDb, path, base){
       cj.collection.items.push(item);
     }
 };
-//query for searching by author and year
-function renderBooksQueries(books, path){
-    const query = {};
-    query.rel = "search";
-    query.href = path + '/search'
-    query.prompt = "search";
-    query.data = [];
-    query.data[0] = {
-        'name' : 'author',
-        'value' : '',
-        'prompt' : 'search book by author ?author={value}'
-    };
-    query.data[1] = {
-        'name' : 'year',
-        'value' : '',
-        'prompt' : 'search book by year ?year={value}'
-    }
-    cj.collection.queries.push(query);
-};
-
+//inserting data to items
 function insertingDataToCollection(dataFromDb,item, i){
   let dataNumbering=0;
   for (parameter in dataFromDb[i]) {
@@ -57,7 +38,7 @@ function insertingDataToCollection(dataFromDb,item, i){
             }
     }
 };
-
+//checking if the resource is book, comment or shelf for giving correct links
 function checkingResource(item, path){
   const relBookItem = [
     ['collection', path],
@@ -82,7 +63,7 @@ function checkingResource(item, path){
     insertingLinksToCollection(item,linked);
   }
 };
-
+//function to insert links into collection of books, comments or shelves
 function insertingLinksToCollection (item, linked){
     let linksNumbering=0;
     for(let i=0; i<linked.length; i++){
@@ -94,7 +75,45 @@ function insertingLinksToCollection (item, linked){
     }
  };
 
+ //query for searching by author and year on books collection
+ function renderBooksQueries(books, path){
+     const query = {};
+     query.rel = "search";
+     query.href = path + '/search'
+     query.prompt = "search";
+     query.data = [];
+     query.data[0] = {
+         'name' : 'author',
+         'value' : '',
+         'prompt' : 'search book by author ?author={value}'
+     };
+     query.data[1] = {
+         'name' : 'year',
+         'value' : '',
+         'prompt' : 'search book by year ?year={value}'
+     }
+     cj.collection.queries.push(query);
+ };
+
+//making Template into collection for POST or PUT
+function renderTemplate(dataFromDb){
+  let template = { data: [] };
+  const blackList = ['id', 'created_at', 'updated_at']; // for doing filtering in array
+// making array with keys from first object in  array and moving id, createdAt and UpdatedAt from array
+  const arrayWithKeys = Object.keys(dataFromDb[0]).filter((element, index)=>{
+    return !blackList.includes(element);
+  });
+  arrayWithKeys.forEach((element, index)=>{
+    const columnName =  arrayWithKeys[index];
+    template.data.push({
+      'name': columnName,
+      'value': "",
+      'prompt': columnName
+    });
+  });
+  cj.collection.template = template;
+};
 
 module.exports = {
-  createCjTemplate, makingItem, cj, renderBooksQueries
+  createCjTemplate, makingItem, cj, renderBooksQueries, renderTemplate
 };
