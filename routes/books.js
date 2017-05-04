@@ -18,9 +18,9 @@ query argument. Alternatively, you could detect if the query was an array and do
 different there.
 */
 
-//search query
+//search query finished
 booksRouter.route('/search')
-  .get ((req, res) => {
+  .get ( (req, res) => {
     if(Object.keys(req.query).length===0) return res.status(200).json(Object.keys(req.query)); // return empty array when query doesnt have parameters
     let keysObject = {};
     if(req.query.hasOwnProperty('author')){
@@ -64,8 +64,8 @@ booksRouter.route('/search')
 
 //GET, PATCH and DELETE single book
 booksRouter.route('/:bookId')
-    .get((req, res) => {
-      Book.findById(req.params.bookId,{ raw: true }).then(book => {
+    .get( (req, res) => {
+      Book.findById( req.params.bookId, { raw: true } ).then( book => {
         const base = 'http://' + req.headers.host;
         const path = base + req.baseUrl;
         collectionJSON.createCjTemplate(base, path);
@@ -73,31 +73,29 @@ booksRouter.route('/:bookId')
         res.status(200).json(collectionJSON.cj);
       }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })
-//ispraviti patch i delete da rade sa promisima then/catch
-    .patch((req, res) => {
-        Book.findById(req.params.bookId).then(book => {
-          if (!book) {
-            res.status(404).json( {msg: 'Not found'} );
-          } else {
-              book.updateAttributes(req.body).then(updatedBook => {
+//sta sa PUTom diff between put and patch ==> if id created_at, updated_at cant update filter that
+    .patch( (req, res) => {
+        Book.findById( req.params.bookId, { raw: true } ).then( updateBook => {
+          if (!updateBook)  return res.status(404).json( {msg: 'Not found'} ); //if book with input id doesnt exist return not found
+           else {
+             console.log(req.body);
+              updateBook.updateAttributes(req.body).then( updatedBook => {
                res.status(200).json(updatedBook); //moze i 204 kada ne vraca content u bodyu
-            });
+            }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
           }
         });
     })
-    .delete((req, res) => {
-      Book.destroy({
-        where: {id: req.params.bookId}
-      })
-      .then((book) => {
-        if (book) {
-          res.status(204).end();
-        }
-        else {
-          res.status(404).json({msg: 'Not Found'});
-        }
-      });
-    });
+// delete done
+    .delete( (req, res) => {
+   Book.findById(req.params.bookId).then( deletedBook => {
+      if (!deletedBook)   return res.status(404).json( { msg: 'Not found' } ); //if book with input id doesnt exist return not found!
+      else {
+        Book.destroy( { where: { id: req.params.bookId } } ).then( book => {
+             res.status(204).end(); // 204 without body
+           }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
+      }
+   });
+});
 
 
 module.exports = booksRouter;
