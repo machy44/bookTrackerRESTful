@@ -7,12 +7,9 @@ const collectionJSON = require('../helpers/mediaTypeObject');
 // GET and POST on collection comments
 commentsRouter.route('/')
 .get( (req, res) => {
-    Comment.findAll({where: {book_id: req.params.bookId}, limit:10, raw: true}).then(comments=>{
-      const base = 'http://' + req.headers.host;
-      const path = base + req.baseUrl;
-      collectionJSON.createCjTemplate(base, path);
-      collectionJSON.makingItem(comments, path); //i need to add read-comments rel
-      res.status(200).json(collectionJSON.cj);
+    Comment.findAll({where: {book_id: req.params.bookId}, limit:10, raw: true}).then( comments => {
+      const json = collectionJSON( req.headers.host, req.baseUrl, comments );
+      res.status(200).json( json );
     }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
 })
 

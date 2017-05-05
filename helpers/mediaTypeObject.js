@@ -1,5 +1,19 @@
 const cjRouter = require('express').Router({mergeParams: true});
-const cj = {};
+let cj = {};
+
+function generatingCollectionJSONResponse (base, path, dataFromDb, opts){
+
+     base = 'http://' + base ;
+     path = base + path;
+
+
+    createCjTemplate(base, path);
+    makingItem(dataFromDb, path);
+    if (opts.query) renderBooksQueries(dataFromDb, path);
+    renderTemplate(dataFromDb);
+
+    return cj;
+};
 
 //create collection+json template
 function createCjTemplate (base, path)  {
@@ -16,7 +30,7 @@ function createCjTemplate (base, path)  {
 };
 
 //making item in collection+json
-function makingItem(dataFromDb, path, base){
+function makingItem(dataFromDb, path){
     for(let i=0; i<dataFromDb.length; i++ ){
       const item = {};
       item.href = path + '/' + dataFromDb[i].id;
@@ -51,22 +65,24 @@ function checkingResource(item, path){
     ['item', item.href ]
   ];
   const relShelves =[];
+
  if(item.data[1].name==="title"){
     let linked = relBookItem;
     insertingLinksToCollection(item,linked)
-  }else if(item.data[1].name==="text"){
+  }
+ else if(item.data[1].name==="text") {
     let linked = relComments;
     insertingLinksToCollection(item,linked);
   }
-  else{
+ else {
     let linked = relShelves;
     insertingLinksToCollection(item,linked);
   }
 };
 //function to insert links into collection of books, comments or shelves
-function insertingLinksToCollection (item, linked){
+function insertingLinksToCollection (item, linked) {
     let linksNumbering=0;
-    for(let i=0; i<linked.length; i++){
+    for( let i=0; i<linked.length; i++ )   {
           item.links[linksNumbering++] = {
           'rel': linked[i][0],
           'href': linked[i][1],
@@ -76,7 +92,7 @@ function insertingLinksToCollection (item, linked){
  };
 
  //query for searching by author and year on books collection
- function renderBooksQueries(books, path){
+ function renderBooksQueries(books, path) {
      const query = {};
      query.rel = "search";
      query.href = path + '/search'
@@ -96,24 +112,25 @@ function insertingLinksToCollection (item, linked){
  };
 
 //making Template into collection for POST or PUT
-function renderTemplate(dataFromDb){
+function renderTemplate(dataFromDb) {
   let template = { data: [] };
   const blackList = ['id', 'created_at', 'updated_at']; // for doing filtering in array
 // making array with keys from first object in  array and moving id, createdAt and UpdatedAt from array
-  const arrayWithKeys = Object.keys(dataFromDb[0]).filter((element, index)=>{
+  const arrayWithKeys = Object.keys(dataFromDb[0]).filter( (element, index) =>{
     return !blackList.includes(element);
   });
-  arrayWithKeys.forEach((element, index)=>{
+  //pushing data in template pattern
+  arrayWithKeys.forEach( (element, index) => {
     const columnName =  arrayWithKeys[index];
-    template.data.push({
-      'name': columnName,
-      'value': "",
-      'prompt': columnName
-    });
+      template.data.push( {
+        'name': columnName,
+        'value': "",
+        'prompt': columnName
+      } );
   });
+
   cj.collection.template = template;
+
 };
 
-module.exports = {
-  createCjTemplate, makingItem, cj, renderBooksQueries, renderTemplate
-};
+module.exports =  generatingCollectionJSONResponse;

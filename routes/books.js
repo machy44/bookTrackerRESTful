@@ -21,7 +21,9 @@ different there.
 //search query finished
 booksRouter.route('/search')
   .get ( (req, res) => {
-    if(Object.keys(req.query).length===0) return res.status(200).json(Object.keys(req.query)); // return empty array when query doesnt have parameters
+
+    const dataLength = Object.keys(req.query)
+    if(dataLength.length===0) return res.status(200).json(dataLength); // return empty array when query doesnt have parameters
     let keysObject = {};
     if(req.query.hasOwnProperty('author')){
       keysObject.author = {$like: `%${req.query.author}%` };
@@ -29,34 +31,30 @@ booksRouter.route('/search')
     if(req.query.hasOwnProperty('year')){
       keysObject.year  =   {$like: `%${req.query.year}%` };
     };
+
       Book.findAll({ where: keysObject, raw: true })
-            .then(books=> {
-              const base = 'http://' + req.headers.host;
-              const path = base + req.baseUrl;
-              collectionJSON.createCjTemplate(base, path);
-              collectionJSON.makingItem(books, path);
-              res.status(200).json(collectionJSON.cj);
+            .then( books=> {
+              //if query data dont exists in db
+              if(books.length===0) return res.status(404).json( {msg: 'Not found'} );
+
+              const json = collectionJSON( req.headers.host, req.baseUrl, books, {query: false} );
+              res.status(200).json( json );
     }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   });
 
 // GET and POST collection books --> vracanje errora kada nema konekcije
  booksRouter.route('/')
     .get( (req, res) => {
-        Book.findAll({limit:10, raw: true}).then(books=>{
-          const base = 'http://' + req.headers.host;
-          const path = base + req.baseUrl;
-          collectionJSON.createCjTemplate(base, path); //ovo u jednu funkciju ubaciti
-          collectionJSON.makingItem(books, path);
-          collectionJSON.renderBooksQueries(books, path);
-          collectionJSON.renderTemplate(books);
-          res.status(200).json(collectionJSON.cj);
+        Book.findAll( { limit:10, raw: true } ).then( books=>{
+          const json = collectionJSON( req.headers.host, req.baseUrl, books, { query: true } );
+          res.status(200).json( json );
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
   })
 
 // POST book --create new book and add location header to created resource
     .post( (req, res) => {
-      Book.create(req.body).then((book) => {
-            res.status(201).append('Location', `books/${book.get('id')}`).json(book);//Location header get uri with new id of created book
+      Book.create(req.body).then( (book) => {
+            res.status(201).append('Location', `books/${book.get('id')}`).json();//Location header get uri with new id of created book
         }).catch((error) => {
             res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
         });
@@ -66,21 +64,19 @@ booksRouter.route('/search')
 booksRouter.route('/:bookId')
     .get( (req, res) => {
       Book.findById( req.params.bookId, { raw: true } ).then( book => {
-        const base = 'http://' + req.headers.host;
-        const path = base + req.baseUrl;
-        collectionJSON.createCjTemplate(base, path);
-        collectionJSON.makingItem([book], path);
-        res.status(200).json(collectionJSON.cj);
+        const json = collectionJSON( req.headers.host, req.baseUrl, [book], {query: false} ); //sending book object in array
+        res.status(200).json( json );
       }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })
 //sta sa PUTom diff between put and patch ==> if id created_at, updated_at cant update filter that
     .patch( (req, res) => {
-        Book.findById( req.params.bookId, { raw: true } ).then( updateBook => {
+        Book.findById( req.params.bookId ).then( updateBook => {
           if (!updateBook)  return res.status(404).json( {msg: 'Not found'} ); //if book with input id doesnt exist return not found
            else {
-             console.log(req.body);
               updateBook.updateAttributes(req.body).then( updatedBook => {
-               res.status(200).json(updatedBook); //moze i 204 kada ne vraca content u bodyu
+                updatedBook = updatedBook.dataValues; //catch only dataValues object
+                const json = collectionJSON( req.headers.host, req.baseUrl, [updatedBook], {query: false} ); //sending book object in array
+                res.status(200).json(json); //we can send 204 without entity in body
             }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
           }
         });
@@ -91,7 +87,7 @@ booksRouter.route('/:bookId')
       if (!deletedBook)   return res.status(404).json( { msg: 'Not found' } ); //if book with input id doesnt exist return not found!
       else {
         Book.destroy( { where: { id: req.params.bookId } } ).then( book => {
-             res.status(204).end(); // 204 without body
+             res.status(204).end(); // 204 without entity in response body
            }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
       }
    });

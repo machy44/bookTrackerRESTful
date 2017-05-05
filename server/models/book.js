@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
-          min: { args: 1, msg: "Author cannot be blank"},
-          max: { args: 254, msg: "Author name can only be 254 characters long." }
+          len: { args: 1, msg: "Author cannot be blank"},
+          //max: { args: 254, msg: "Author name can only be 254 characters long." }
       }
     },
     isbn: {
@@ -27,9 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     year: { //sredi godinu
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate :{
-          min: {args: 0, msg: "only numbers from 0 till today date and must be 4 numbers long"},
-          max: {args: 2017, msg: "only numbers from 0 till today date and must be 4 numbers long"}
+      validate: {
+          //min: {args: 0, msg: "only numbers from 0 till today date and must be 4 numbers long"},
+          //max: {args: 2017, msg: "only numbers from 0 till today date and must be 4 numbers long"}
+          len: 4
       }
     },
     edition: DataTypes.INTEGER,
@@ -45,16 +46,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Oops. Looks like you already have a book with this URL."
       },
       validate: {
-          min: { args: 1, msg: "URL cannot be blank"},
-          max: { args: 255, msg: "URL You entered is longer than 255 characters"}
+        //  len: { args: 1, msg: "URL cannot be blank"},
+        len: 1
     }
     },
     about: {
       type: DataTypes.STRING(767),
       allowNull: false,
       validate: {
-          min: { args: 1, msg: " About cannot be blank." },
-          max: { args: 767, msg: "About You entered is longer than 767 characters" }
+          len: { args: 1, msg: " About cannot be blank." },
+          //max: { args: 767, msg: "About You entered is longer than 767 characters" }
       }
     }
   }, {
