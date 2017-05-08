@@ -63,8 +63,8 @@ module.exports = (sequelize, DataTypes) => {
  // title and edition unique
     classMethods: {
       associate: (models) =>{
-        Book.hasMany(models.Comment);
-        Book.belongsToMany(models.Shelf, {through: 'book_shelves'});
+        Book.hasMany( models.Comment );
+        Book.belongsToMany( models.Shelf, { through: 'book_shelves' } );
       }
     }
   });

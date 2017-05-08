@@ -10,7 +10,7 @@ function generatingCollectionJSONResponse (base, path, dataFromDb, opts){
     createCjTemplate(base, path);
     makingItem(dataFromDb, path);
     if (opts.query) renderBooksQueries(dataFromDb, path);
-    renderTemplate(dataFromDb);
+    if (opts.template) renderTemplate(dataFromDb);
 
     return cj;
 };
@@ -114,7 +114,7 @@ function insertingLinksToCollection (item, linked) {
 //making Template into collection for POST or PUT
 function renderTemplate(dataFromDb) {
   let template = { data: [] };
-  const blackList = ['id', 'created_at', 'updated_at']; // for doing filtering in array
+  const blackList = ['id', 'created_at', 'updated_at', 'book_id']; // for doing filtering in array. you cant put/post this parameters and they will not be shown in template
 // making array with keys from first object in  array and moving id, createdAt and UpdatedAt from array
   const arrayWithKeys = Object.keys(dataFromDb[0]).filter( (element, index) =>{
     return !blackList.includes(element);
