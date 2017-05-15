@@ -35,6 +35,6 @@ module.exports = {
       });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('book_shelves');
+    return queryInterface.dropTable('books_shelves');
   }
 };

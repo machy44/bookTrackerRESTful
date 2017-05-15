@@ -30,11 +30,6 @@ app.use('/api', apiRouter);
 
 
 
-
-
-
-
-
 // catch 404 and forward to error handler
 app.use( (req, res, next) => {
   var err = new Error('Not Found');

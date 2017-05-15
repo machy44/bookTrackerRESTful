@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes)=> {
     underscored: true,
     classMethods: {
       associate: (models)=> {
-        Shelf.belongsToMany(models.Book, {through: 'book_shelves'});
+        Shelf.belongsToMany( models.Book, { through: 'books_shelves' } );
       }
     }
   });

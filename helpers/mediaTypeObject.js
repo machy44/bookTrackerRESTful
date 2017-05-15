@@ -64,7 +64,11 @@ function checkingResource(item, path){
     ['read-book', path.slice(0,-9)], // cut out /comments from path
     ['item', item.href ]
   ];
-  const relShelves =[];
+  const relShelves =[
+    ['collection', path],
+    ['see-books', item.href + '/books'], // cut out /comments from path
+    ['item', item.href ]
+  ];
 
  if(item.data[1].name==="title"){
     let linked = relBookItem;

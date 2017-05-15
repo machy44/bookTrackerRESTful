@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) =>{
         Book.hasMany( models.Comment );
-        Book.belongsToMany( models.Shelf, { through: 'book_shelves' } );
+        Book.belongsToMany( models.Shelf, { through: 'books_shelves' } );
       }
     }
   });

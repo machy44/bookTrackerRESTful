@@ -1,5 +1,6 @@
-const booksRouter = require('express').Router({mergeParams: true});
+const booksRouter = require('express').Router( {mergeParams: true} );
 const Book = require('../server/models').Book;
+const Shelf = require('../server/models').Shelf;
 const collectionJSON = require('../helpers/mediaTypeObject');
 /*
 
@@ -47,7 +48,8 @@ booksRouter.route('/search')
 // GET and POST collection books --> returnin error where there is no connection
  booksRouter.route('/')
     .get( (req, res) => {
-        Book.findAll( { limit:10, raw: true } ).then( books=>{
+        Book.findAll( { raw: true })
+        .then( books => {
           const json = collectionJSON( req.headers.host, req.baseUrl, books, { query: true, template: true} );
           res.status(200).json( json );
         }).catch( error => res.status(500).json( {msg: error.message, errors: error.errors}) );
@@ -66,7 +68,7 @@ booksRouter.route('/search')
 booksRouter.route('/:bookId')
     .get( (req, res) => {
       Book.findById( req.params.bookId, { raw: true } ).then( book => {
-        const json = collectionJSON( req.headers.host, req.baseUrl, [book], {query: false, template: true} ); //sending book object in array
+        const json = collectionJSON( req.headers.host, req.baseUrl, [ book ], { query: false, template: true } ); //sending book object in array
         res.status(200).json( json );
       }).catch( error => res.status(404).json( {msg: 'Not found'} ) );
     })
