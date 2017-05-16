@@ -57,7 +57,8 @@ function checkingResource(item, path){
   const relBookItem = [
     ['collection', path],
     ['read-comments', item.href +'/comments'],
-    ['item', item.href ]
+    ['item', item.href ],
+    ['get-shelves', item.href + '/shelves' ]
   ];
   const relComments = [
     ['collection', path],

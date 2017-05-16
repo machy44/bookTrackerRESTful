@@ -20,7 +20,7 @@ shelvesRouter.route('/')
       });
   });
 
-shelvesRouter.route('/:shelfId')
+shelvesRouter.route('/:shelfId(\\d+)') // regexp to accept only numbers in shelfId
   .get((req, res) => {//200 else 404
     Shelf.findById(req.params.shelfId, { raw: true } )
    .then( shelf => {
@@ -39,15 +39,29 @@ shelvesRouter.route('/:shelfId')
   });
 //REQUESTS ON BOOKS IN SHELVES booksInShelves
 //GET books in shelves
-shelvesRouter.route('/:shelfId(\\d+)/books') // regexp to accept only numbers
-  .get( (req, res) => {
+shelvesRouter.route('/:shelfId(\\d+)/books') // regexp to accept only numbers in shelfId
+  .get( (req, res) => { // returns shelf which doesnt exist//must solve that
     let queryValue = 'SELECT books.id, books.title, books.author, books.isbn, books.publisher,  \
                       books.edition, books.pages, books.language, books.url, books.about, books.created_at, books.updated_at \
                       FROM books INNER JOIN books_shelves ON books.id = books_shelves.book_id WHERE books_shelves.shelf_id = :shelfId';
-      sequelize.query(queryValue, { replacements: { shelfId: req.params.shelfId }, type: sequelize.QueryTypes.SELECT }).then( books => {
-        const json = collectionJSON( req.headers.host, req.baseUrl,  books , { query: false, template: true } );
+        sequelize.query(queryValue, { replacements: { shelfId: req.params.shelfId }, type: sequelize.QueryTypes.SELECT }).then( books => {
+        const json = collectionJSON( req.headers.host, req.baseUrl,  books , { query: false, template: false } );
         res.status(200).json( json );
       }).catch(error => res.status(404).json( { msg: "Not Found" } ) );
   })
+  .post( (req, res) => {
+    Book.create(req.body)
+        .then( book => {
+          Shelf.findById(req.params.shelfId).then( shelf => {
+              if(!shelf) return res.status(400).json( { msg: "Not Found"} );
+              book.addShelf(shelf)
+              .then( shelf => { res.status(204).json(); })
+              .catch(error => res.status(400).json( { msg:  "Not Found" } ));
+      })
+          res.status(201).append('Location', `books/${book.get('id')}`).json();//Location header get uri with new id of created book
+      }).catch( error => {
+          res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
+      });
+});
 
 module.exports = shelvesRouter;
