@@ -37,6 +37,7 @@ shelvesRouter.route('/:shelfId')
   .delete((req, res) => {//204else 404
     res.status(200).json({ message: 'DELETE request to the shelves!' });
   });
+//REQUESTS ON BOOKS IN SHELVES booksInShelves
 //GET books in shelves
 shelvesRouter.route('/:shelfId(\\d+)/books')
   .get( (req, res) => {
