@@ -5,7 +5,7 @@ const Comment = require('../server/models').Comment;
 const Book = require('../server/models').Book;
 const collectionJSON = require('../helpers/mediaTypeObject');
 
-// GET and POST on collection comments
+// GET and POST on collection comments--not found?
 commentsRouter.route('/')
     .get( (req, res) => {
         Comment.findAll( { where: { book_id: req.params.bookId }, limit:10, raw: true } ).then( comments => { // comments of book id defined in url
@@ -27,7 +27,7 @@ commentsRouter.route('/')
     });
   });
 // GET, PATCH and DELETE on single comment
-commentsRouter.route('/:commentId')
+commentsRouter.route('/:commentId') // 400 bad request if bookId doesnt exist
     .get( (req, res) => { //200 else 404
        Comment.findAll( { where: {  id: req.params.commentId , book_id: req.params.bookId }, raw: true } ) // find comment by id for certain book
       .then( comment => {
