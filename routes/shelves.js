@@ -38,7 +38,7 @@ shelvesRouter.route('/:shelfId')
     res.status(200).json({ message: 'DELETE request to the shelves!' });
   });
 //GET books in shelves
-shelvesRouter.route('/:shelfId(\\d+)/books')
+shelvesRouter.route('/:shelfId(\\d+)/books') // regexp to accept only numbers
   .get( (req, res) => {
     let queryValue = 'SELECT books.id, books.title, books.author, books.isbn, books.publisher,  \
                       books.edition, books.pages, books.language, books.url, books.about, books.created_at, books.updated_at \
