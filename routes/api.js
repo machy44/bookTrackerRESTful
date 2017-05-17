@@ -13,12 +13,12 @@ apiRouter.get('/', (req, res) => {
 apiRouter.use('/books', booksRouter);
 apiRouter.use('/books/:bookId/comments', commentsRouter);
 //BOOK-SHELVES ROUTES
-apiRouter.use('/books/:bookId/shelves', bookShelvesRouter); // rel shelves
+apiRouter.use('/books/:bookId/shelves', bookShelvesRouter); // rel read-shelves
 
 
 //SHELVES ROUTES
 apiRouter.use('/shelves', shelvesRouter);
-apiRouter.use('/shelves/:shelfId/books', shelvesRouter); // rel new-book
+apiRouter.use('/shelves/:shelfId/books', shelvesRouter); // rel see-books
 
 
 module.exports = apiRouter;

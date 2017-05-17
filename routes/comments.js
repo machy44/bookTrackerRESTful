@@ -9,6 +9,7 @@ const collectionJSON = require('../helpers/mediaTypeObject');
 commentsRouter.route('/')
     .get( (req, res) => {
         Comment.findAll( { where: { book_id: req.params.bookId }, limit:10, raw: true } ).then( comments => { // comments of book id defined in url
+          if(!comments.length) return res.status(200).json( comments );
           const json = collectionJSON( req.headers.host, req.baseUrl, comments, { query: false, template: true } );
           res.status(200).json( json );
         }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );

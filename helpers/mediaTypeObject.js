@@ -5,7 +5,7 @@ function generatingCollectionJSONResponse (base, path, dataFromDb, opts){
 
      base = 'http://' + base ;
      path = base + path;
-
+     console.log(base, path);
 
     createCjTemplate(base, path);
     makingItem(dataFromDb, path);
@@ -58,7 +58,7 @@ function checkingResource(item, path){
     ['collection', path],
     ['read-comments', item.href +'/comments'],
     ['item', item.href ],
-    ['get-shelves', item.href + '/shelves' ]
+    ['read-shelves', item.href + '/shelves' ]
   ];
   const relComments = [
     ['collection', path],
@@ -67,8 +67,9 @@ function checkingResource(item, path){
   ];
   const relShelves =[
     ['collection', path],
-    ['see-books', item.href + '/books'], // cut out /comments from path
-    ['item', item.href ]
+    ['see-books', item.href + '/books'],
+    ['item', item.href],
+    //['new-book', item.href ]
   ];
 
  if(item.data[1].name==="title"){
