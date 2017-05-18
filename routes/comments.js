@@ -15,7 +15,7 @@ commentsRouter.route('/')
     })
     .post( (req, res) => {
     Book.findById(req.params.bookId).then( book => {
-        if( !book ) return res.status(400).json( { msg: "book id is not valid" } ); // book id is not valid
+        if( !book ) return res.status(400).json( { msg: "book id doesnt exist" } ); // book id is not valid
         else {
           book.createComment(req.body)
               .then(comment => res.status(201).append('Location', `books/${req.params.bookId}/comments/${comment.get('id')}`).json())//Location header get uri with new id of created book
