@@ -50,6 +50,7 @@ booksRouter.route('/search')
     .get( (req, res) => {
         Book.findAll( { raw: true })
         .then( books => {
+          //console.log(books);
           const json = collectionJSON( req.headers.host, req.baseUrl, books, { query: true, template: true} );
           res.status(200).json( json );
         }).catch( error => res.status(500).json( {msg: error.message, errors: error.errors}) );
@@ -65,7 +66,7 @@ booksRouter.route('/search')
   });
 
 //GET, PATCH and DELETE single book
-booksRouter.route('/:bookId')
+booksRouter.route('/:bookId(\\d+)')
     .get( (req, res) => {
       Book.findById( req.params.bookId, { raw: true } ).then( book => {
         const json = collectionJSON( req.headers.host, req.baseUrl, [ book ], { query: false, template: true } ); //sending book object in array

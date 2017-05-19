@@ -28,7 +28,7 @@ bookShelvesRouter.route('/')
   });
 });
 // GET api/books/1/shelves/1  return true if association exists
-bookShelvesRouter.route('/:shelfId(\\d+)')// if exists association in book_shelves
+bookShelvesRouter.route('/:shelfId(\\d+)')// if exists association in book_shelves // regexp only numbers
   .get( (req, res) => {
     let selectQueryValue = 'select book_id, shelf_id, created_at, updated_at from books_shelves where shelf_id = :shelfId and book_id = :bookId';
       sequelize.query( selectQueryValue, { replacements: { shelfId: req.params.shelfId, bookId: req.params.bookId }, type: sequelize.QueryTypes.SELECT })

@@ -51,7 +51,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     },{
-      uniqueKeys: [{
+      uniqueKeys: [{ // return this when title and edition are same
          name: 'You have that title with same edition in database',
          singleFields: false,
          fields: ['title', 'edition']

@@ -24,19 +24,27 @@ module.exports = (sequelize, DataTypes) => {
     publisher:{
       type: DataTypes.STRING
     },
-    year: { //sredi godinu
+    datePublished: { //datePublished will show in interface
       type: DataTypes.INTEGER,
+      field: 'year', // name of field in database
       allowNull: false,
       validate: {
           //min: {args: 0, msg: "only numbers from 0 till today date and must be 4 numbers long"},
           //max: {args: 2017, msg: "only numbers from 0 till today date and must be 4 numbers long"}
           len: 4
-      }
+        }
     },
-    edition: DataTypes.INTEGER,
-    pages: DataTypes.INTEGER,
-    language: {
-      type: DataTypes.STRING(32)
+    bookEdition: {
+      type: DataTypes.INTEGER,
+      field: 'edition'
+    },
+    numberOfPages: {
+      type: DataTypes.INTEGER,
+      field: 'pages'
+    },
+    inLanguage: {
+      type: DataTypes.STRING(32),
+      field: 'language'
     },
     url:{
       type: DataTypes.STRING(255),
@@ -50,9 +58,10 @@ module.exports = (sequelize, DataTypes) => {
         len: 1
     }
     },
-    about: {
+    description: {
       type: DataTypes.STRING(767),
       allowNull: false,
+      field: 'about',
       validate: {
           len: { args: 1, msg: " About cannot be blank." },
           //max: { args: 767, msg: "About You entered is longer than 767 characters" }
@@ -60,7 +69,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     underscored: true,
- // title and edition unique
+    //freezeTableNames: true,
+
     classMethods: {
       associate: (models) =>{
         Book.hasMany( models.Comment );

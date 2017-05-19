@@ -28,7 +28,7 @@ commentsRouter.route('/')
     });
   });
 // GET, PATCH and DELETE on single comment
-commentsRouter.route('/:commentId') // 400 bad request if bookId doesnt exist
+commentsRouter.route('/:commentId(\\d+)') // 400 bad request if bookId doesnt exist
     .get( (req, res) => { //200 else 404
        Comment.findAll( { where: {  id: req.params.commentId , book_id: req.params.bookId }, raw: true } ) // find comment by id for certain book
       .then( comment => {
