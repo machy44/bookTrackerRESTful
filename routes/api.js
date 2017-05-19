@@ -6,7 +6,10 @@ const bookShelvesRouter = require('./bookShelves');
 
 
 apiRouter.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to booktracker api!'  });
+  res.status(200).json( { "message": 'Welcome to booktracker api!',
+                          "starting-point": req.headers.host + req.baseUrl,
+                          "list-books": req.headers.host + req.baseUrl + '/books',
+                          "list-shelves": req.headers.host + req.baseUrl + '/shelves' } );
 });
 
 //BOOKS, COMMENTS ROUTES

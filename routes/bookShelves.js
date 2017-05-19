@@ -17,7 +17,7 @@ bookShelvesRouter.route('/')
         let queryValue = 'SELECT shelves.id, shelves.name, shelves.created_at, shelves.updated_at \
         FROM shelves INNER JOIN books_shelves ON shelves.id = books_shelves.shelf_id WHERE books_shelves.book_id = :bookId';
         sequelize.query(queryValue, { replacements: { bookId: req.params.bookId }, type: sequelize.QueryTypes.SELECT }).then( shelves => {
-          if (!shelves.length) return res.status(200).json( shelves );
+          if (!shelves.length) return res.status(200).json( shelves ); // return empty array
           const json = collectionJSON( req.headers.host, '/api/shelves',  shelves , { query: false, template: false } );
           res.status(200).json( json );
         }).catch(error => res.status(404).json( { msg: "Not Found" } ) );
