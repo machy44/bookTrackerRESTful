@@ -31,15 +31,15 @@ booksRouter.route('/search')
     if(req.query.hasOwnProperty('author')){
       keysObject.author = { $like: `%${req.query.author}%` };
     };
-    if(req.query.hasOwnProperty('year')){
-      keysObject.year  =   { $like: `%${req.query.year}%` };
+    if(req.query.hasOwnProperty('datePublished')){
+      keysObject.datePublished  =   { $like: `%${req.query.datePublished}%` };
     };
 
       Book.findAll({ where: keysObject, raw: true })
             .then( books=> {
               if(books.length===0) return res.status(404).json( {msg: 'Not found'} ); //if query data dont exists in db
 
-              const json = collectionJSON( req.headers.host, req.baseUrl, books, { query: false, template: true } );
+              const json = collectionJSON( req.headers.host, req.baseUrl, books, { query: false, template: false } );
               res.status(200).json( json );
 
     }).catch( error => res.status(500).json( {msg: error.message, errors: error.errors}) );
