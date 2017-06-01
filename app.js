@@ -1,5 +1,4 @@
 const express = require('express');
-
 const logger = require('morgan');
 const fs = require("fs");
 const path = require("path");
@@ -14,10 +13,11 @@ const publicPath = path.resolve(__dirname, "public");
 
 const app = express();
 
-
 // configure app to use bodyParser(). this will let us get the data from a POST
-app.use( bodyParser.json( { limit: '50mb' } ) );
-app.use( bodyParser.urlencoded( { limit: '50mb', extended: true , parameterLimit:50000 } ) );
+app.use( bodyParser.json());
+app.use( bodyParser.urlencoded( { extended: true } ) );
+
+
 
 //morgan logger
 app.use(logger("combined"));
@@ -45,6 +45,7 @@ app.use( (req, res, next) => {
 // error handler
 app.use( (err, req, res, next) => {
   // render the error page
+  console.log(err.stack);
   res.status(err.status || 500);
   res.send(err.message);
 });

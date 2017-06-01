@@ -5,6 +5,17 @@ const collectionJSON = require('../helpers/mediaTypeObject');
 //multer for uploading pdfs
 const multer = require('multer');
 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/pdfs')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+var upload = multer({ storage: storage })
+
 /*
 
 /search?q=abc&q=xyz --> then req.query.q will be the array ["abc", "xyz"].
@@ -60,18 +71,20 @@ booksRouter.route('/search')
 
 // POST book --create new book and add location header to created resource // post on id must return error that u must create resource on collection
 //pdf upload with multer
-    .post( multer( { dest: '../public/pdfs'} ).single('foo'), (req, res) => {
-
-            console.log(req.file);
-
-
-        Book.create(req.body).then( book => {
-            res.status(201).append('Location', `books/${book.get('id')}`).json();//Location header get uri with new id of created book
-
-        }).catch( error => {
-            res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
-        });
-  });
+    .post( upload.single('pdf'), (req, res) => {
+        //if else to check if file extension is pdf
+          if(req.file.originalname.slice(-3)==='pdf') {
+            console.log(req.file.originalname.slice(-3));
+              req.body.url = 'pdfs/' + req.file.originalname;
+              Book.create(req.body).then( book => {
+                  res.status(201).append('Location', `books/${book.get('id')}`).json();//Location header get uri with new id of created book
+              }).catch( error => {
+                    res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
+                });
+          } else {
+            res.status(400).json( { msg: 'file is not in pdf format' } );
+          }
+      });
 
 //GET, PATCH and DELETE single book
 booksRouter.route('/:bookId(\\d+)')
@@ -88,7 +101,7 @@ booksRouter.route('/:bookId(\\d+)')
            else {
               updateBook.updateAttributes(req.body).then( updatedBook => {
                 updatedBook = updatedBook.dataValues; //catch only dataValues object
-                const json = collectionJSON( req.headers.host, req.baseUrl, [updatedBook], {query: false, template: true} ); //sending book object in array
+                const json = collectionJSON( req.headers.host, req.baseUrl, [ updatedBook ], { query: false, template: true } ); //sending book object in array
                 res.status(200).json( json ); //we can send 204 without entity in body
             }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
           }

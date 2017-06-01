@@ -127,13 +127,24 @@ function renderTemplate(dataFromDb) {
   });
   //pushing data in template pattern
   arrayWithKeys.forEach( (element, index) => {
-    const columnName =  arrayWithKeys[index];
+    //console.log(arrayWithKeys[index]);
+    if(arrayWithKeys[index] === 'url'){
+      let columnName = 'pdf';
       template.data.push( {
         'name': columnName,
         'value': "",
-        'prompt': columnName
+        'prompt': 'insert pdf file into book resource'
       } );
-  });
+    }
+    else {
+      let columnName =  arrayWithKeys[index];
+        template.data.push( {
+          'name': columnName,
+          'value': "",
+          'prompt': columnName
+        } );
+    }
+});
 
   cj.collection.template = template;
 
