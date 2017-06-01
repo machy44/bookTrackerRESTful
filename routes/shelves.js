@@ -54,7 +54,6 @@ shelvesRouter.route('/:shelfId(\\d+)') // regexp to accept only numbers in shelf
     });
   });
 //REQUESTS ON BOOKS IN SHELVES booksInShelves
-//GET books in shelves
 shelvesRouter.route('/:shelfId(\\d+)/books') // regexp to accept only numbers in shelfId
   .get( (req, res) => { // returns shelf which doesnt exist//must solve that
     let queryValue = 'SELECT books.id, books.title, books.author, books.isbn, books.publisher,  \

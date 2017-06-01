@@ -2,6 +2,9 @@ const booksRouter = require('express').Router( {mergeParams: true} );
 const Book = require('../server/models').Book;
 const Shelf = require('../server/models').Shelf;
 const collectionJSON = require('../helpers/mediaTypeObject');
+//multer for uploading pdfs
+const multer = require('multer');
+
 /*
 
 /search?q=abc&q=xyz --> then req.query.q will be the array ["abc", "xyz"].
@@ -18,8 +21,7 @@ and ignore the rest. This still works if someone gives you one query argument or
 query argument. Alternatively, you could detect if the query was an array and do something
 different there.
 */
-
-//search query finished
+//search query
 booksRouter.route('/search')
   .get ( (req, res) => {
 
@@ -57,9 +59,15 @@ booksRouter.route('/search')
   })
 
 // POST book --create new book and add location header to created resource // post on id must return error that u must create resource on collection
-    .post( (req, res) => {
-      Book.create(req.body).then( (book) => {
+//pdf upload with multer
+    .post( multer( { dest: '../public/pdfs'} ).single('foo'), (req, res) => {
+
+            console.log(req.file);
+
+
+        Book.create(req.body).then( book => {
             res.status(201).append('Location', `books/${book.get('id')}`).json();//Location header get uri with new id of created book
+
         }).catch( error => {
             res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
         });
