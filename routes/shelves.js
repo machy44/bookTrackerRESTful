@@ -4,33 +4,26 @@ const sequelize = require('../server/models').sequelize;
 const Book = require('../server/models').Book;
 const collectionJSON = require('../helpers/mediaTypeObject');
 
-// GET and POST on collection shelves
+
 shelvesRouter.route('/')
-    .get( (req, res) => {
-        Shelf.findAll( { limit:10, raw: true } ).then( shelves => {
-          const json = collectionJSON( req.headers.host, req.baseUrl, shelves, { query: false, template: true } );
-          res.status(200).json( json );
-        }).catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
-    })
-  .post((req, res) => {//201 ili 400 sa bodyem koji objasnjava error
-    Shelf.create(req.body).then( shelf => {
-          res.status(201).append('Location', `shelves/${shelf.get('id')}`).json();//Location header get uri with new id of created book
-      }).catch( error => {
-          res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors});
-      });
+  .get((req, res) => {
+    Shelf.findAll({ raw: true })
+         .then(shelves => res.status(200).json(collectionJSON(req.headers.host, req.baseUrl, shelves, { query: false, template: true })))
+         .catch(error => res.status(500).json( {msg: error.message, errors: error.errors}) );
+  })
+  .post((req, res) => {
+    Shelf.create(req.body)
+         .then(shelf => res.status(201).append('Location', `shelves/${shelf.get('id')}`).end())
+         .catch(error => res.status(400).json({msg: error.message, constraint: error.name, errors: error.errors}));
   });
 
-shelvesRouter.route('/:shelfId(\\d+)') // regexp to accept only numbers in shelfId
-  .get((req, res) => {//200 else 404
-    Shelf.findById(req.params.shelfId, { raw: true } )
-   .then( shelf => {
-     const json = collectionJSON( req.headers.host, req.baseUrl, [ shelf ], { query: false, template: true } );
-     res.status(200).json( json );
-   })
-   .catch( error => res.status(404).json( { msg: "Not Found" } ) );
+shelvesRouter.route('/:shelfId(\\d+)')
+  .get((req, res) => {
+    Shelf.findById(req.params.shelfId, { raw: true })
+         .then(shelf => res.status(200).json(collectionJSON(req.headers.host, req.baseUrl, [ shelf ], { query: false, template: true })))
+         .catch( error => res.status(404).json({ msg: "Not Found" } ));
   })
-
-  .patch((req, res) => {//200 else 404
+  .put((req, res) => {
     Shelf.findById( req.params.shelfId ).then( updateShelf => {
       if (!updateShelf)  return res.status(404).json( {msg: 'Not found'} ); //if shelf with input id doesnt exist return not found
        else {
