@@ -8,7 +8,7 @@ IANA relations repository(https://www.iana.org/assignments/link-relations/link-r
 State diagram is highly motivated by "RESTful Web API-s" book from Chapter "The Design Procedure" 
 where authors talk about "Seven-Step Design Procedure" and how to build RESTful API.
 
-
+![statediagrambooktracker](https://cloud.githubusercontent.com/assets/7934791/26753967/c9e6485a-4871-11e7-8d29-06c3b3396dfe.png)
 
 Interface is built in Collection + JSON Hypermedia Type (http://amundsen.com/media-types/collection/).
 
