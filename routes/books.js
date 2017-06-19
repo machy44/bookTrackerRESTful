@@ -14,7 +14,6 @@ var upload = multer({
   fileFilter: (req, file, cb) => { file.mimetype === 'application/pdf' ? cb(null, true) : cb(new Error('Not a pdf')) }
  }).single('pdf');
 
-
 booksRouter.get('/search', (req, res) => {
   if(Object.keys(req.query)=== 0) return res.status(200).json([]); // return empty array when query doesnt have parameters
 
@@ -43,7 +42,7 @@ booksRouter.get('/search', (req, res) => {
     .post((req, res) => {
       upload(req, res, function (err) {
         if (err) return res.status(400).json( { msg: 'file is not in pdf format' } );
-        req.body.url = '/pdfs' + req.file.originalname;
+        req.body.url = '/pdfs/' + req.file.originalname;
         Book.create(req.body)
             .then(book => res.status(201).append('Location', `books/${book.get('id')}`).end())
             .catch(error => {
@@ -60,14 +59,19 @@ booksRouter.route('/:bookId(\\d+)')
           .catch(error => res.status(404).json({ msg: 'Not found' }));
     })
     .put((req, res) => {
-      Book.update(req.body, { where: { id: req.params.bookId } })
-          .then(updateBook => res.status(200).json(collectionJSON(req.headers.host, req.baseUrl, [updatedBook.dataValues], { query: false, template: true })))
-          .catch(error => res.status(404).json({ msg: 'Not found' }));
-    })
+	    Book.findById( req.params.bookId )
+      .then( updateBook =>  {
+             if (!updateBook)  return res.status(404).json( {msg: 'Not found'} );
+             updateBook.updateAttributes(req.body).then( updatedBook => {
+	           updatedBook = updatedBook.dataValues;
+             res.status(200).json( collectionJSON( req.headers.host, req.baseUrl, [updatedBook], {query: false, template: true} ) );
+            }).catch( error => res.status(404).json( { msg: 'Not found' } ) );
+          });
+	  })
     .delete((req, res) => {
       Book.destroy({ where: { id: req.params.bookId } })
           .then(deletedBook => res.status(204).end())
           .catch(error => res.status(404).json({ msg: 'Not found' }));
-      });
+    });
 
 module.exports = booksRouter;

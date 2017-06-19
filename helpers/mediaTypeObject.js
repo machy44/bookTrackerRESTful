@@ -133,7 +133,7 @@ function renderTemplate(dataFromDb) {
       template.data.push( {
         'name': columnName,
         'value': "",
-        'prompt': 'insert pdf file into book resource'
+        'prompt': 'insert pdf file into book resource to store url in pdfs/{nameOfDocument}'
       } );
     }
     else {
