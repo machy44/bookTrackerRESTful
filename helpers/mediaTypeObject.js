@@ -97,7 +97,7 @@ function insertingLinksToCollection (item, linked) {
     }
  };
 
- //query for searching by author and year on books collection
+ //query for searching by author and datePublished on books collection
  function renderBooksQueries(books, path) {
      const query = {};
      query.rel = "search";

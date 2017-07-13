@@ -21,7 +21,7 @@ module.exports = {
         unique: true
       },
       publisher:{
-        type: Sequelize.STRING
+        type: Sequelize.STRING(32),
       },
       year: {
         type: Sequelize.INTEGER,
@@ -30,7 +30,7 @@ module.exports = {
       edition: Sequelize.INTEGER,
       pages: Sequelize.INTEGER,
       language: {
-        type: Sequelize.STRING(32)
+        type: Sequelize.STRING(16),
       },
       url:{
         type: Sequelize.STRING(255),
@@ -38,9 +38,8 @@ module.exports = {
         unique: true
       },
       about: {
-        type: Sequelize.STRING(767),
+        type: Sequelize.TEXT,
         allowNull: false,
-        unique: true
       },
       created_at: {
         allowNull: false,

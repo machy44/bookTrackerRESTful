@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       text:{
-        type: Sequelize.STRING(255),
+        type: Sequelize.TEXT,
         allowNull: false
       },
       book_id: {

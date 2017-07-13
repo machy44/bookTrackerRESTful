@@ -23,11 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       publisher:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING(32),
       },
-      datePublished: { //datePublished will show in interface
+      year: { //datePublished will show in interface
         type: DataTypes.INTEGER,
-        field: 'year', // name of field in database
         allowNull: false,
         validate: {
             //min: {args: 0, msg: "only numbers from 0 till today date and must be 4 numbers long"},
@@ -44,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'pages'
       },
       inLanguage: {
-        type: DataTypes.STRING(32),
+        type: DataTypes.STRING(16),
         field: 'language'
       },
       url:{
@@ -60,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       }
       },
       description: {
-        type: DataTypes.STRING(767),
+        type: DataTypes.TEXT,
         allowNull: false,
         field: 'about',
         validate: {

@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     comment:{
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       field: 'text',
       allowNull: false,
       validate: {

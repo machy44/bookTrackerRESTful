@@ -2,17 +2,17 @@
 
 UML state diagram how does interface of REST service returns links for HATEOAS.
 
-Link relations in JSON have generic names from Schema.org (https://schema.org/) and
-IANA relations repository(https://www.iana.org/assignments/link-relations/link-relations.xhtml)
+Interface is built in Collection + JSON Hypermedia Type (http://amundsen.com/media-types/collection/).
 
 State diagram is highly motivated by "RESTful Web API-s" book from Chapter "The Design Procedure" 
 where authors talk about "Seven-Step Design Procedure" and how to build RESTful API.
 
-![statediagrambooktracker](https://cloud.githubusercontent.com/assets/7934791/26753967/c9e6485a-4871-11e7-8d29-06c3b3396dfe.png)
+Properties in JSON Object have generic names from Schema.org (https://schema.org/) and Link relations have names from 
+IANA relations repository(https://www.iana.org/assignments/link-relations/link-relations.xhtml)
 
-Interface is built in Collection + JSON Hypermedia Type (http://amundsen.com/media-types/collection/).
+![statediagram](https://user-images.githubusercontent.com/7934791/27351425-9a68af34-55fd-11e7-8f30-78eeccaa3e2b.jpg)
 
-REST service is built in Node js and Express js framework.
+REST service is built in Node js and Express js framework
 
 
 

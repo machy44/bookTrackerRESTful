@@ -21,8 +21,8 @@ booksRouter.get('/search', (req, res) => {
   if(req.query.hasOwnProperty('author')){
     keysObject.author = { $like: `%${req.query.author}%` };
   };
-  if(req.query.hasOwnProperty('datePublished')){
-    keysObject.datePublished = { $like: `%${req.query.datePublished}%` };
+  if(req.query.hasOwnProperty('year')){
+    keysObject.year = { $like: `%${req.query.year}%` };
   };
 
   Book.findAll({ where: keysObject, raw: true })
@@ -41,7 +41,7 @@ booksRouter.get('/search', (req, res) => {
     })
     .post((req, res) => {
       upload(req, res, function (err) {
-        if (err) return res.status(400).json( { msg: 'file is not in pdf format' } );
+        if (err) return res.status(400).json({ msg: 'file is not in pdf format' });
         req.body.url = '/pdfs/' + req.file.originalname;
         Book.create(req.body)
             .then(book => res.status(201).append('Location', `books/${book.get('id')}`).end())
