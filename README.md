@@ -8,7 +8,7 @@ State diagram is highly motivated by "RESTful Web API-s" book from Chapter "The 
 where authors talk about "Seven-Step Design Procedure" and how to build RESTful API.
 
 Properties in JSON Object have generic names from Schema.org (https://schema.org/) and Link relations have names from 
-IANA relations repository(https://www.iana.org/assignments/link-relations/link-relations.xhtml)
+IANA relations repository(https://www.iana.org/assignments/link-relations/link-relations.xhtml) - Using collection (https://tools.ietf.org/html/rfc6573), item (https://tools.ietf.org/html/rfc6573) link types
 
 ![statediagram](https://user-images.githubusercontent.com/7934791/27351425-9a68af34-55fd-11e7-8f30-78eeccaa3e2b.jpg)
 
