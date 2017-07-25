@@ -5,7 +5,6 @@ function generatingCollectionJSONResponse (base, path, dataFromDb, opts){
 
      base = 'http://' + base ;
      path = base + path;
-     console.log(base, path);
 
     createCjTemplate(base, path);
     makingItem(dataFromDb, path);

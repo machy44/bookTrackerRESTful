@@ -14,13 +14,13 @@ module.exports = {
     */
     return queryInterface.bulkInsert('comments', [
       {
-        text: 'Aaauff sto je dobra knjiga.',
+        text: 'security pogledaj i mongo db kako koristi.',
         book_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        text: 'Collection+json i druge tipove medija vidi',
+        text: 'Definiran Collection+json tip medija',
         book_id: 2,
         created_at: new Date(),
         updated_at: new Date(),

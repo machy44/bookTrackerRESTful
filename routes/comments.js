@@ -30,9 +30,21 @@ commentsRouter.route('/:commentId(\\d+)')
            .catch( error => res.status(404).json({ msg: "Not Found" }));
   })
   .put((req, res) => {
-    Comment.update({ text: req.body.text }, { where: { id: req.params.commentId } })
-           .then(updatedComment => res.status(200).json(collectionJSON(req.headers.host, req.baseUrl, [updatedComment], { query: false, template: true })))
+  /*  Comment.update({ text: req.body.text }, { where: { id: req.params.commentId } })
+           .then(updatedComment => {
+             res.status(200).json(collectionJSON(req.headers.host, req.baseUrl, [updatedComment], { query: false, template: true }))
+           })
            .catch(error => res.status(400).json({ msg: error }));
+  })*/
+    Comment.findById(req.params.commentId)
+           .then(updateComment =>{
+                if(!updateComment) res.status(404).json( {msg: 'Not found'} );
+                updateComment.updateAttributes(req.body).then(updatedComment => {
+                updatedComment = updatedComment.dataValues;
+                res.status(200).json(collectionJSON( req.headers.host, req.baseUrl, [updatedComment], {query: false, template: true}));
+              })
+            })
+           .catch(error => res.status(404).json({ msg: 'Not found' }))
   })
   .delete((req, res) => {
     Comment.destroy({ where: { id: req.params.commentId } })

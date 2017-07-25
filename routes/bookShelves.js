@@ -38,7 +38,7 @@ bookShelvesRouter.route('/:shelfId(\\d+)')// if exists association in book_shelv
       })
       .catch(error => res.status(404).json({ msg: "Not Found" }));
   })
-  .put((req, res) => {// add association in books_shelves
+  .put((req, res) => {// add association in books_shelves -> for example put book in the shelf
         Book.findById(req.params.bookId)
         .then(book => {
             if(!book) return res.status(400).json({ msg: "Not Found" });
@@ -52,7 +52,7 @@ bookShelvesRouter.route('/:shelfId(\\d+)')// if exists association in book_shelv
          .catch (error => {  res.status(500).json({msg: error.message, constraint: error.name, errors: error.errors});
         });
    })
-  .delete((req, res) => {// delete association in books_shelves
+  .delete((req, res) => {// delete association in books_shelves -> for example delete book from shelf
         Book.findById(req.params.bookId)
         .then(book => {
             if(!book) return res.status(400).json({ msg: "Not Found"});

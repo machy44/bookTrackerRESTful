@@ -1,9 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
-    comment:{
+    text:{
       type: DataTypes.TEXT,
-      field: 'text',
       allowNull: false,
       validate: {
         len: { args: 1, msg: "Comment must be at least 1 character in length"}

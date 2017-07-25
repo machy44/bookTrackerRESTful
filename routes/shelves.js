@@ -25,7 +25,7 @@ shelvesRouter.route('/:shelfId(\\d+)')
   })
   .put((req, res) => {
     Shelf.findById( req.params.shelfId ).then(updateShelf => {
-      if (!updateShelf)  return res.status(404).json({ msg: 'Not found' }); //if shelf with input id doesnt exist return not found
+      if(!updateShelf)  return res.status(404).json({ msg: 'Not found' }); //if shelf with input id doesnt exist return not found
        else {
           updateShelf.updateAttributes({ name: req.body.name }).then(updatedShelf => {
             updatedShelf = updatedShelf.dataValues;
