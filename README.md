@@ -12,7 +12,7 @@ IANA relations repository(https://www.iana.org/assignments/link-relations/link-r
 
 ![statediagram](https://user-images.githubusercontent.com/7934791/27351425-9a68af34-55fd-11e7-8f30-78eeccaa3e2b.jpg)
 
-REST service is built in Node js and Express js framework
+REST API is built on Node.js and Express.js framework.
 
 
 
