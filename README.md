@@ -2,7 +2,7 @@
 
 Based on Roy Fielding dissertation https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf chapter 5: Representational State Transfer (REST)
 
-UML state diagram how does interface of REST service returns links for HATEOAS.
+UML state diagram which shows how does interface of REST service returns links for HATEOAS.
 
 Interface is built in Collection + JSON Hypermedia Type (http://amundsen.com/media-types/collection/).
 
